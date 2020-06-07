@@ -1,5 +1,5 @@
 from flask import jsonify
-from configs.Sources import SUPPLIERS_ENDPOINTS, ID_IDENTIFIER
+from configs.sources import SUPPLIERS_ENDPOINTS, ID_IDENTIFIER
 from db_access import client as db
 from Models.HotelDetail import HotelDetail
 import aiohttp

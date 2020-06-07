@@ -1,5 +1,5 @@
 import unittest
-from configs.Sources import *
+from configs.sources import *
 from ApiController import *
 from helpers import pretty_print_dict
 

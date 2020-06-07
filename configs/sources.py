@@ -1,3 +1,6 @@
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+
 SUPPLIERS_ENDPOINTS = [
     'http://www.mocky.io/v2/5ebbea002e000054009f3ffc',
     'http://www.mocky.io/v2/5ebbea102e000029009f3fff',

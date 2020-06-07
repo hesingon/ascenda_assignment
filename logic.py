@@ -1,23 +1,22 @@
 from flask_restful import Resource
 from flask import request, make_response
-from ApiController import fetch_hotel_details, query_one_hotel, query_hotels
+from ApiController import query_one_hotel, query_hotels
+from configs.api_formats import API_HOTEL_ID_PARAM, \
+    API_DESTINATION_ID_PARAM, API_PARAM_ERROR_MESSAGE
 
 
 class Hotels(Resource):
-    def get(self):
+    @staticmethod
+    def get():
         args = request.args
         keys = list(args.keys())
-        if 'hotel_id' not in keys and 'destination_id' not in keys:
-            error_message = 'Please ensure either parameters hotel_id ' \
-                            'or destination_id is passed'
-            return make_response(error_message, 404)
-        elif 'hotel_id' in keys:
-            result = query_one_hotel(args['hotel_id'])
+
+        if API_HOTEL_ID_PARAM not in keys and \
+                API_DESTINATION_ID_PARAM not in keys:
+            return make_response(API_PARAM_ERROR_MESSAGE, 404)
+        elif API_HOTEL_ID_PARAM in keys:
+            result = query_one_hotel(args[API_HOTEL_ID_PARAM])
             return make_response(result, 200)
-        elif 'destination_id' in keys:
-            result = query_hotels(args['destination_id'])
+        elif API_DESTINATION_ID_PARAM in keys:
+            result = query_hotels(args[API_DESTINATION_ID_PARAM])
             return make_response(result, 200)
-
-
-
-

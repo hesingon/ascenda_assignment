@@ -1,17 +1,12 @@
 from flask import Flask
 from flask_restful import Api
-from flask_pymongo import PyMongo
 from logic import Hotels
+from configs.api_formats import API_URL_FIND_HOTELS
 
 app = Flask(__name__)
-app.config['JSON_SORT_KEYS'] = False
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
-
-mongo = PyMongo(app)
 api = Api(app)
 
-api.add_resource(Hotels, '/find_hotels')
-# api.add_resource(Quotes, '/')
+api.add_resource(Hotels, API_URL_FIND_HOTELS)
 
 if __name__ == '__main__':
     app.run(debug=True)
