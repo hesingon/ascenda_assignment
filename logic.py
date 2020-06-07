@@ -1,22 +1,15 @@
 from flask_restful import Resource
-from flask import request
+from flask import request as this_req
+import requests
 
 
 class Hotels(Resource):
     def get(self):
-        args = request.args
+        args = this_req.args
+        supplier1 = requests.get('http://www.mocky.io/v2/5ebbea002e000054009f3ffc').json()
+        supplier2 = requests.get('http://www.mocky.io/v2/5ebbea102e000029009f3fff').json()
+        supplier3 = requests.get('http://www.mocky.io/v2/5ebbea1f2e00002b009f4000').json()
+        res = supplier1 + supplier2 + supplier3
+        # res.status_code = 200
+        return res
 
-        return args
-
-
-class Quotes(Resource):
-    def get(self):
-        return {
-            'William Shakespeare': {
-                'quote': ['Love all,trust a few,do wrong to none',
-                          'Some are born great, some achieve greatness, and some greatness thrust upon them.']
-            },
-            'Linus': {
-                'quote': ['Talk is cheap. Show me the code.']
-            }
-        }
