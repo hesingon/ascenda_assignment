@@ -1,6 +1,6 @@
 import unittest
-from HotelDetail import HotelDetail
-from Sources import DIRTY_HOTEL_DATA
+from Models.HotelDetail import HotelDetail
+from configs.Sources import DIRTY_HOTEL_DATA
 from helpers import pretty_print_dict
 
 

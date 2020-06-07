@@ -1,15 +1,23 @@
 from flask_restful import Resource
-from flask import request as this_req
-import requests
+from flask import request, make_response
+from ApiController import fetch_hotel_details, query_one_hotel, query_hotels
 
 
 class Hotels(Resource):
     def get(self):
-        args = this_req.args
-        supplier1 = requests.get('http://www.mocky.io/v2/5ebbea002e000054009f3ffc').json()
-        supplier2 = requests.get('http://www.mocky.io/v2/5ebbea102e000029009f3fff').json()
-        supplier3 = requests.get('http://www.mocky.io/v2/5ebbea1f2e00002b009f4000').json()
-        res = supplier1 + supplier2 + supplier3
-        # res.status_code = 200
-        return res
+        args = request.args
+        keys = list(args.keys())
+        if 'hotel_id' not in keys and 'destination_id' not in keys:
+            error_message = 'Please ensure either parameters hotel_id ' \
+                            'or destination_id is passed'
+            return make_response(error_message, 404)
+        elif 'hotel_id' in keys:
+            result = query_one_hotel(args['hotel_id'])
+            return make_response(result, 200)
+        elif 'destination_id' in keys:
+            result = query_hotels(args['destination_id'])
+            return make_response(result, 200)
+
+
+
 

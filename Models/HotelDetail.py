@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from helpers import is_valid_latitude_and_longitude
 from mergedeep import merge
 from configs.api_formats import *
@@ -20,10 +21,11 @@ CITY_PICK_PRIORITY = ['City']
 class HotelDetail:
     def __init__(self, hotel_id, destination_id, infos):
         self.infos = infos
-        self.formulated_info = {
+        self.formulated_info = OrderedDict()
+        self.formulated_info.update({
             ID_KEY: hotel_id,
             DESTINATION_KEY: destination_id
-        }
+        })
 
     def formulate(self):
         self.formulate_name()
