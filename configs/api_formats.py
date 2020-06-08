@@ -17,8 +17,11 @@ BOOKING_CONDITION_KEY = 'booking_conditions'
 API_HOTEL_ID_PARAM = 'hotel_id'
 API_DESTINATION_ID_PARAM = 'destination_id'
 
-API_PARAM_ERROR_MESSAGE = 'Please ensure either parameters ' \
+ERROR_MESSAGE_API_PARAM = 'Please ensure either parameters ' \
                           'hotel_id or destination_id is passed.'
 
 API_URL_FIND_HOTELS = '/find_hotels'
 
+DOCUMENT_KEY_UPDATE_AT = 'updated_at'
+DOCUMENT_KEY_ID = 'id'
+DOCUMENT_KEY_DESTINATION = 'dest'

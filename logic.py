@@ -5,7 +5,9 @@ from HotelController import query_one_hotel, query_hotels, \
     update_db_hotels_by_desintation
 from helpers import has_time_elapsed_for
 from configs.api_formats import API_HOTEL_ID_PARAM, \
-    API_DESTINATION_ID_PARAM, API_PARAM_ERROR_MESSAGE
+    API_DESTINATION_ID_PARAM, ERROR_MESSAGE_API_PARAM, \
+    DOCUMENT_KEY_UPDATE_AT
+from configs.settings import HOTEL_UPDATE_INTERVAL
 
 
 class Hotels(Resource):
@@ -16,12 +18,13 @@ class Hotels(Resource):
 
         if API_HOTEL_ID_PARAM not in keys and \
                 API_DESTINATION_ID_PARAM not in keys:
-            return make_response(API_PARAM_ERROR_MESSAGE, 404)
+            return make_response(ERROR_MESSAGE_API_PARAM, 404)
 
         elif API_HOTEL_ID_PARAM in keys:
             result = query_one_hotel(args[API_HOTEL_ID_PARAM])
             if not result or \
-                    has_time_elapsed_for(result['updated_at'], 60):
+                    has_time_elapsed_for(result[DOCUMENT_KEY_UPDATE_AT],
+                                         HOTEL_UPDATE_INTERVAL):
                 result = update_db_new_hotel(args[API_HOTEL_ID_PARAM])
             return make_response(result, 200)
 

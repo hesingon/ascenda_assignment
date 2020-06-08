@@ -1,11 +1,14 @@
 from flask import jsonify
 import aiohttp
 import asyncio
-from configs.sources import SUPPLIERS_ENDPOINTS, \
-    ID_IDENTIFIERS, DESTINTATION_IDENTIFIERS
+from configs.sources import ID_IDENTIFIERS, DESTINTATION_IDENTIFIERS
 from db_access import client as db
 from Models.HotelDetail import HotelDetail
 from helpers import time_now, has_time_elapsed_for
+from configs.api_formats import DOCUMENT_KEY_UPDATE_AT, \
+    DOCUMENT_KEY_DESTINATION, DOCUMENT_KEY_ID
+from configs.settings import SUPPLIERS_ENDPOINTS, \
+    DESTINATION_UPDATE_INTERVAL
 
 
 def _group_hotels_by_id(responses):
@@ -105,15 +108,15 @@ def update_db_new_hotel(hotel_id):
 
 def update_db_hotels_by_desintation(dest):
     data = _request_hotel(destination=dest)
-    # hotel_details = _group_hotels_by_id(data)
     combined_details = []
     for _, hotel in data.items():
         detail = _merge_hotel_info(hotel)
         save_hotel_to_db(detail)
         combined_details.append(detail)
+
     db.ascenda.dest_update.update_one(
-        {'dest': dest},
-        {'$set': {'updated_at': time_now()}},
+        {DOCUMENT_KEY_DESTINATION: dest},
+        {'$set': {DOCUMENT_KEY_UPDATE_AT: time_now()}},
         upsert=True
     )
     return jsonify(combined_details)
@@ -121,17 +124,17 @@ def update_db_hotels_by_desintation(dest):
 
 def save_hotel_to_db(hotel_json):
     hotel_json.update({
-        'updated_at': time_now()
+        DOCUMENT_KEY_UPDATE_AT: time_now()
     })
     db.ascenda.hotels.update_one(
-        {'id': hotel_json['id']},
+        {DOCUMENT_KEY_ID: hotel_json[DOCUMENT_KEY_ID]},
         {'$set': hotel_json},
         upsert=True
     )
 
 
 def query_one_hotel(hotel_id):
-    result = db.ascenda.hotels.find_one({'id': hotel_id})
+    result = db.ascenda.hotels.find_one({DOCUMENT_KEY_ID: hotel_id})
     if result:
         del result['_id']
     return result
@@ -147,5 +150,6 @@ def query_hotels(destination_id):
 
 
 def should_update_all_hotels_for_destination(dest):
-    dest_info = db.ascenda.dest_update.find_one({'dest': dest})
-    return not dest_info or has_time_elapsed_for(dest_info['updated_at'], 1)
+    dest_info = db.ascenda.dest_update.find_one({DOCUMENT_KEY_DESTINATION: dest})
+    return not dest_info or has_time_elapsed_for(dest_info[DOCUMENT_KEY_UPDATE_AT],
+                                                 DESTINATION_UPDATE_INTERVAL)
