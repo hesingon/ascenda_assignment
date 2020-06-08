@@ -7,6 +7,8 @@ from configs.api_formats import *
 LATITUDE_CANDIDATE_KEYS = ['lat', 'Latitude']
 LONGITUDE_CANDIDATE_KEYS = ['lng', 'Longitude']
 NAME_CANDIDATE_KEYS = ['name', 'hotel_name', 'Name']
+ID_CANDIDATE_KEYS = ['Id', 'hotel_id', 'id']
+DESTINATION_CANDIDATE_KEYS = ['DestinationId', 'destination_id', 'destination']
 ADDRESS_CANDIDATE_KEYS = ['location', 'City', 'address', 'Country']
 DESCRIPTION_CANDIDATE_KEYS = ['details', 'Description', 'info']
 AMENITY_CANDIDATE_KEY = 'amenities'
@@ -19,15 +21,13 @@ CITY_PICK_PRIORITY = ['City']
 
 
 class HotelDetail:
-    def __init__(self, hotel_id, destination_id, infos):
+    def __init__(self, infos):
         self.infos = infos
         self.formulated_info = OrderedDict()
-        self.formulated_info.update({
-            ID_KEY: hotel_id,
-            DESTINATION_KEY: destination_id
-        })
 
     def formulate(self):
+        self.formulate_id()
+        self.formulate_destination()
         self.formulate_name()
         self.formulate_location()
         self.formulate_description()
@@ -103,6 +103,14 @@ class HotelDetail:
     def formulate_name(self):
         name = self.gather_candidate_infos(NAME_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({NAME_KEY: name})
+
+    def formulate_id(self):
+        ID = self.gather_candidate_infos(ID_CANDIDATE_KEYS, one_only=True)
+        self.formulated_info.update({ID_KEY: ID})
+
+    def formulate_destination(self):
+        dest = self.gather_candidate_infos(DESTINATION_CANDIDATE_KEYS, one_only=True)
+        self.formulated_info.update({DESTINATION_KEY: dest})
 
     def formulate_location(self):
         location = {

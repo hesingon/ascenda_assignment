@@ -7,7 +7,7 @@ from helpers import pretty_print_dict
 class TestHotelDetail(unittest.TestCase):
 
     def test_formuate(self):
-        hotel = HotelDetail("iJhz", 5432, DIRTY_HOTEL_DATA)
+        hotel = HotelDetail("iJhz", DIRTY_HOTEL_DATA)
         result = hotel.formulate()
         pretty_print_dict(result)
 

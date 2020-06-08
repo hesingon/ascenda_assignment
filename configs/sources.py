@@ -13,10 +13,16 @@ HOTEL_ID = [
     'f8c9'
 ]
 
-ID_IDENTIFIER = [
+ID_IDENTIFIERS = [
     'Id',
     'hotel_id',
     'id'
+]
+
+DESTINTATION_IDENTIFIERS = [
+    'destination',
+    'DestinationId',
+    'destination_id'
 ]
 
 DIRTY_HOTEL_DATA = [
