@@ -21,7 +21,8 @@ Navigate to a desired folder and clone this repo.
 ```
 git clone https://github.com/hesingon/ascenda_assignment.git
 ```
-Go to the repo directory, build and run the project using with docker-compose.
+Go to the repo directory, build and run the project with
+[docker-compose](https://docs.docker.com/compose/install/).
 ```
 cd ascenda_assignment
 docker-compose build
