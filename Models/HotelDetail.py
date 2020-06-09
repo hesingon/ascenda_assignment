@@ -26,17 +26,17 @@ class HotelDetail:
         self.formulated_info = OrderedDict()
 
     def formulate(self):
-        self.formulate_id()
-        self.formulate_destination()
-        self.formulate_name()
-        self.formulate_location()
-        self.formulate_description()
-        self.formulate_images()
-        self.formulate_booking_condition()
-        self.formulate_amenities()
+        self._formuate_id()
+        self._formuate_destination()
+        self._formuate_name()
+        self._formuate_location()
+        self._formuate_description()
+        self._formuate_images()
+        self._formuate_booking_condition()
+        self._formuate_amenities()
         return self.formulated_info
 
-    def gather_piece_info(self, key):
+    def _gather_piece_info(self, key):
         infos = []
         for source in self.infos:
             if key in source:
@@ -44,7 +44,7 @@ class HotelDetail:
         return infos
 
     @staticmethod
-    def curate_amenities(amenities):
+    def _curate_amenities(amenities):
         curated = {}
         for item in amenities:
             if item and isinstance(item, dict):
@@ -54,7 +54,7 @@ class HotelDetail:
         return curated
 
     @staticmethod
-    def pick_from(obj, options):
+    def _pick_from(obj, options):
         for option in options:
             try:
                 if option.count('.') == 1:
@@ -68,7 +68,7 @@ class HotelDetail:
         return ""
 
     @staticmethod
-    def curate_images(images):
+    def _curate_images(images):
         result = {}
         image_set = set()
         for item in images:
@@ -89,7 +89,7 @@ class HotelDetail:
                     result[key] = result[key] + current
         return result
 
-    def gather_candidate_infos(self, keys, one_only=False):
+    def _gather_candidate_infos(self, keys, one_only=False):
         candidates = {}
         for source in self.infos:
             for key in keys:
@@ -100,26 +100,26 @@ class HotelDetail:
                         candidates.update({key: source[key]})
         return candidates
 
-    def formulate_name(self):
-        name = self.gather_candidate_infos(NAME_CANDIDATE_KEYS, one_only=True)
+    def _formuate_name(self):
+        name = self._gather_candidate_infos(NAME_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({NAME_KEY: name})
 
-    def formulate_id(self):
-        ID = self.gather_candidate_infos(ID_CANDIDATE_KEYS, one_only=True)
+    def _formuate_id(self):
+        ID = self._gather_candidate_infos(ID_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({ID_KEY: ID})
 
-    def formulate_destination(self):
-        dest = self.gather_candidate_infos(DESTINATION_CANDIDATE_KEYS, one_only=True)
+    def _formuate_destination(self):
+        dest = self._gather_candidate_infos(DESTINATION_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({DESTINATION_KEY: dest})
 
-    def formulate_location(self):
+    def _formuate_location(self):
         location = {
             LATITUDE_KEY: None,
             LONGITUDE_KEY: None
         }
 
-        latitude_candidates = self.gather_candidate_infos(LATITUDE_CANDIDATE_KEYS)
-        longitude_candidates = self.gather_candidate_infos(LONGITUDE_CANDIDATE_KEYS)
+        latitude_candidates = self._gather_candidate_infos(LATITUDE_CANDIDATE_KEYS)
+        longitude_candidates = self._gather_candidate_infos(LONGITUDE_CANDIDATE_KEYS)
         for i in range(len(LATITUDE_CANDIDATE_KEYS)):
             try:
                 current_lat = latitude_candidates[LATITUDE_CANDIDATE_KEYS[i]]
@@ -132,31 +132,31 @@ class HotelDetail:
                     LONGITUDE_KEY: current_lng
                 })
 
-        address_candidates = self.gather_candidate_infos(ADDRESS_CANDIDATE_KEYS)
+        address_candidates = self._gather_candidate_infos(ADDRESS_CANDIDATE_KEYS)
         location.update({
-            ADDRESS_KEY: self.pick_from(address_candidates, ADDRESS_PICK_PRIORITY),
-            COUNTRY_KEY: self.pick_from(address_candidates, COUNTRY_PICK_PRIORITY),
-            CITY_KEY: self.pick_from(address_candidates, CITY_PICK_PRIORITY)
+            ADDRESS_KEY: self._pick_from(address_candidates, ADDRESS_PICK_PRIORITY),
+            COUNTRY_KEY: self._pick_from(address_candidates, COUNTRY_PICK_PRIORITY),
+            CITY_KEY: self._pick_from(address_candidates, CITY_PICK_PRIORITY)
         })
 
         self.formulated_info.update({LOCATION_KEY: location})
 
-    def formulate_description(self):
-        description_candidates = self.gather_candidate_infos(DESCRIPTION_CANDIDATE_KEYS)
+    def _formuate_description(self):
+        description_candidates = self._gather_candidate_infos(DESCRIPTION_CANDIDATE_KEYS)
         # Select the most descriptive one, that is the longest string.
         best_description = max(description_candidates.values(), key=len)
         self.formulated_info.update({DESCRIPTION_KEY: best_description})
 
-    def formulate_amenities(self):
-        amenity_pieces = self.gather_piece_info(AMENITY_CANDIDATE_KEY)
-        curated_amenities = self.curate_amenities(amenity_pieces)
+    def _formuate_amenities(self):
+        amenity_pieces = self._gather_piece_info(AMENITY_CANDIDATE_KEY)
+        curated_amenities = self._curate_amenities(amenity_pieces)
         self.formulated_info.update({AMENITY_KEY: curated_amenities})
 
-    def formulate_images(self):
-        images_pieces = self.gather_piece_info(IMAGE_CANDIDATE_KEY)
-        curated_images = self.curate_images(images_pieces)
+    def _formuate_images(self):
+        images_pieces = self._gather_piece_info(IMAGE_CANDIDATE_KEY)
+        curated_images = self._curate_images(images_pieces)
         self.formulated_info.update({IMAGE_KEY: curated_images})
 
-    def formulate_booking_condition(self):
-        condition = self.gather_candidate_infos(BOOKING_CONDITION_CANDIDATE_KEYS, one_only=True)
+    def _formuate_booking_condition(self):
+        condition = self._gather_candidate_infos(BOOKING_CONDITION_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({BOOKING_CONDITION_KEY: condition})

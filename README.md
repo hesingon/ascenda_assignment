@@ -38,7 +38,7 @@ present, the server will only handle `hotel_id`
 <br>
 
 ### Configuration & Settings
-You can do a few configurations by changing `configs/settings`. 
+You can do a few configurations by changing `configs/settings.py`. 
 
 `HOTEL_UPDATE_INTERVAL` represents, when server receives a request for a single
 hotel, how much time in minutes the server should check the supplier 

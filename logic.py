@@ -37,6 +37,7 @@ class Hotels(Resource):
                 destination = int(args[API_DESTINATION_ID_PARAM])
             except ValueError:
                 return make_response(ERROR_MESSAGE_INVALID_PARAM, 404)
+
             if should_update_all_hotels_for_destination(destination):
                 print("Should update destination result")
                 result = update_db_hotels_by_desintation(destination)
