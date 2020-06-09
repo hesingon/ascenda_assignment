@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  web:
+    build: .
+    command: python -u app.py
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DOCKER_MODE=True
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/darius_submission
+    links:
+      - db
+  db:
+    image: mongo:4.2.7

@@ -6,7 +6,7 @@ from db_access import client as db
 from Models.HotelDetail import HotelDetail
 from helpers import time_now, has_time_elapsed_for
 from configs.api_formats import DOCUMENT_KEY_UPDATE_AT, \
-    DOCUMENT_KEY_DESTINATION, DOCUMENT_KEY_ID
+    DOCUMENT_KEY_DESTINATION, DOCUMENT_KEY_ID, DESTINATION_KEY
 from configs.settings import SUPPLIERS_ENDPOINTS, \
     DESTINATION_UPDATE_INTERVAL
 
@@ -101,6 +101,8 @@ def _merge_hotel_info(data):
 
 def update_db_new_hotel(hotel_id):
     data = _request_hotel(hotel_id=hotel_id)
+    if len(data) == 0:
+        raise Exception
     hotel_details = _merge_hotel_info(data)
     save_hotel_to_db(hotel_details)
     return hotel_details
@@ -141,7 +143,7 @@ def query_one_hotel(hotel_id):
 
 
 def query_hotels(destination_id):
-    cursor = db.ascenda.hotels.find({'destination_id': destination_id})
+    cursor = db.ascenda.hotels.find({DESTINATION_KEY: destination_id})
     result = []
     for item in cursor:
         del item['_id']

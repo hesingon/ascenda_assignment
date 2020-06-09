@@ -3,7 +3,7 @@
 ### MongoDB setup
 Spin up mongodb as a docker image <br>
 ```
-docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:latest
+docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:4.2.7
 ```
 To connect to the instance <br>
 ```

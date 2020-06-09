@@ -19,6 +19,8 @@ API_DESTINATION_ID_PARAM = 'destination_id'
 
 ERROR_MESSAGE_API_PARAM = 'Please ensure either parameters ' \
                           'hotel_id or destination_id is passed.'
+ERROR_MESSAGE_INVALID_PARAM = 'Invalid destination id. It should be a numerical'
+ERROR_MESSAGE_NO_HOTEL_FOUND = 'Hotel not found'
 
 API_URL_FIND_HOTELS = '/find_hotels'
 
