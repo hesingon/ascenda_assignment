@@ -9,6 +9,8 @@ and customizability for api servers.
 
 `docker-compose` is used for easy setup.
 
+<br>
+
 ### Setup
 Navigate to a desired folder and clone this repo.
 ```
@@ -33,6 +35,8 @@ http://localhost:5000/find_hotels?destination_id=5432
 Note that the two should not be passed together. If they are both 
 present, the server will only handle `hotel_id`
 
+<br>
+
 ### Configuration & Settings
 You can do a few configurations by changing `configs/settings`. 
 
@@ -46,8 +50,9 @@ for updating all hotels in the same destination.
 `SUPPLIERS_ENDPOINTS` are the list of supplier endpoints from which
 the server will check for updates of hotels periodically.
 
+<br>
 
-### Performance enhancement
+### Design Consideration for Performance
 
 1. Whenever server receives a request, it queries db first. If db
 does not contain info for that hotel, or it realized that the hotel
@@ -59,6 +64,7 @@ or 1 day).
 2. The querying of multiple supplier APIs is done in a multi-threaded
 manner with `aiohttp` to minimise request latency.
  
+<br>
 
 ### More possible improvement
 1. We can include `redis` as an in-memory db on top of mongodb that 
