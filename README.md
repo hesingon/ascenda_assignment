@@ -9,6 +9,11 @@ and customizability for api servers.
 
 `docker-compose` is used for easy setup.
 
+The logic for merging hotel details from different sources is in
+`Models/HotelDetail.py`, where the class takes a parameter of available results,
+then modularizes the addition of individual detail in the form of a class method.
+This way, they can be modified/added/removed independently of one another.
+
 <br>
 
 ### Setup
