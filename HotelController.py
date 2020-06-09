@@ -108,7 +108,7 @@ def update_db_new_hotel(hotel_id):
     return hotel_details
 
 
-def update_db_hotels_by_desintation(dest):
+def update_db_hotels_by_destination(dest):
     data = _request_hotel(destination=dest)
     combined_details = []
     for _, hotel in data.items():

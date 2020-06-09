@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request, make_response
 from HotelController import query_one_hotel, query_hotels, \
     update_db_new_hotel, should_update_all_hotels_for_destination, \
-    update_db_hotels_by_desintation
+    update_db_hotels_by_destination
 from helpers import has_time_elapsed_for
 from configs.api_formats import API_HOTEL_ID_PARAM, \
     API_DESTINATION_ID_PARAM, ERROR_MESSAGE_API_PARAM, \
@@ -40,7 +40,7 @@ class Hotels(Resource):
 
             if should_update_all_hotels_for_destination(destination):
                 print("Should update destination result")
-                result = update_db_hotels_by_desintation(destination)
+                result = update_db_hotels_by_destination(destination)
             else:
                 result = query_hotels(destination)
 

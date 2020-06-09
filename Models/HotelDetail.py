@@ -26,14 +26,14 @@ class HotelDetail:
         self.formulated_info = OrderedDict()
 
     def formulate(self):
-        self._formuate_id()
-        self._formuate_destination()
-        self._formuate_name()
-        self._formuate_location()
-        self._formuate_description()
-        self._formuate_images()
-        self._formuate_booking_condition()
-        self._formuate_amenities()
+        self._formulate_id()
+        self._formulate_destination()
+        self._formulate_name()
+        self._formulate_location()
+        self._formulate_description()
+        self._formulate_images()
+        self._formulate_booking_condition()
+        self._formulate_amenities()
         return self.formulated_info
 
     def _gather_piece_info(self, key):
@@ -100,19 +100,19 @@ class HotelDetail:
                         candidates.update({key: source[key]})
         return candidates
 
-    def _formuate_name(self):
+    def _formulate_name(self):
         name = self._gather_candidate_infos(NAME_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({NAME_KEY: name})
 
-    def _formuate_id(self):
+    def _formulate_id(self):
         ID = self._gather_candidate_infos(ID_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({ID_KEY: ID})
 
-    def _formuate_destination(self):
+    def _formulate_destination(self):
         dest = self._gather_candidate_infos(DESTINATION_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({DESTINATION_KEY: dest})
 
-    def _formuate_location(self):
+    def _formulate_location(self):
         location = {
             LATITUDE_KEY: None,
             LONGITUDE_KEY: None
@@ -141,22 +141,22 @@ class HotelDetail:
 
         self.formulated_info.update({LOCATION_KEY: location})
 
-    def _formuate_description(self):
+    def _formulate_description(self):
         description_candidates = self._gather_candidate_infos(DESCRIPTION_CANDIDATE_KEYS)
         # Select the most descriptive one, that is the longest string.
         best_description = max(description_candidates.values(), key=len)
         self.formulated_info.update({DESCRIPTION_KEY: best_description})
 
-    def _formuate_amenities(self):
+    def _formulate_amenities(self):
         amenity_pieces = self._gather_piece_info(AMENITY_CANDIDATE_KEY)
         curated_amenities = self._curate_amenities(amenity_pieces)
         self.formulated_info.update({AMENITY_KEY: curated_amenities})
 
-    def _formuate_images(self):
+    def _formulate_images(self):
         images_pieces = self._gather_piece_info(IMAGE_CANDIDATE_KEY)
         curated_images = self._curate_images(images_pieces)
         self.formulated_info.update({IMAGE_KEY: curated_images})
 
-    def _formuate_booking_condition(self):
+    def _formulate_booking_condition(self):
         condition = self._gather_candidate_infos(BOOKING_CONDITION_CANDIDATE_KEYS, one_only=True)
         self.formulated_info.update({BOOKING_CONDITION_KEY: condition})
